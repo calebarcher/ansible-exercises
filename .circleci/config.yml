@@ -4,20 +4,37 @@ orbs:
   aws-cli: circleci/aws-cli@3.1.1
 
 jobs:
-  create-infrastructure:
-    docker:
-      - image: amazon/aws-cli
+  # create-infrastructure:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create Cloudformation Stack
+  #         command: |
+  #           aws cloudformation deploy \
+  #             --template-file template.yml \
+  #             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+  #             --region us-east-1
+
+  configure-infrastructure:
+    docker: 
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["43:9b:80:68:47:bd:33:40:29:8f:f1:b6:f4:9b:1f:ca"]
       - run:
-          name: Create Cloudformation Stack
+          name: Install Ansible
           command: |
-            aws cloudformation deploy \
-              --template-file template.yml \
-              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-              --region us-east-1
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure Server
+          command: |
+            ansible-playbook -i inventory.txt main.yml
 
 workflows:
   my_workflow:
     jobs:
-      - create-infrastructure
+      # - create-infrastructure
+      - configure-infrastructure
