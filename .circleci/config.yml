@@ -71,7 +71,8 @@ jobs:
               --template-file bucket.yml \
               --stack-name create-bucket-${CIRCLE_WORKFLOW_ID:0:5} \
               --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:5}"
-      - run: aws s3 sync ./index.html s3://mybucket-${CIRCLE_WORKFLOW_ID:0:5} --delete
+      - run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:5} --delete
+  
   get-last-deployment-id:
     docker:
       - image: amazon/aws-cli
@@ -82,7 +83,7 @@ jobs:
           name: Fetch and save the old pipeline ID (Bucket Name) responsible for the last release
           command: |
             aws cloudformation \
-            list-exports --query "Exports[?Name==\`PipelineID\].Value" \
+            list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
             --no-paginate --output text > ~/textfile.txt
       - persist_to_workspace:
           root: ~/
