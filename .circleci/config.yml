@@ -110,11 +110,11 @@ jobs:
       - run: yum install -y tar gzip
       - attach_workspace:
           at: ~/
-      run:
-        name: Destroy the previous s3 bucket and cloudformation stack.
-        command: |
-          export OldBucketID=$(cat ~/textfile.txt)
-          aws s3 rm "s3://${OldBucketID}" --recursive
+      - run:
+          name: Destroy the previous s3 bucket and cloudformation stack.
+          command: |
+            export OldBucketID=$(cat ~/textfile.txt)
+            aws s3 rm "s3://${OldBucketID}" --recursive
 
 
 workflows:
