@@ -8,7 +8,7 @@ commands:
           when: on_fail
           command: |
              aws cloudformation delete-stack --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5}
-  get-instance-DNS:
+  get-instance-dns:
       - run:
           name: Getting instance public IPV4 DNS
           command: |
@@ -47,7 +47,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["43:9b:80:68:47:bd:33:40:29:8f:f1:b6:f4:9b:1f:ca"]
-      - get-instance-DNS
+      - get-instance-dns
       - attach_workspace:
           at: ~/ 
       - run:
