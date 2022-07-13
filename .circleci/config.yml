@@ -9,7 +9,6 @@ commands:
           command: |
              aws cloudformation delete-stack --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5}
   get-instance-DNS:
-    SecurityGroups:
       - run:
           name: Getting instance public IPV4 DNS
           command: |
