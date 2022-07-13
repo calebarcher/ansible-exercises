@@ -1,0 +1,27 @@
+---
+- name: "Create user for Node Exporter"
+  become: yes
+  shell: |
+    sudo useradd --no-create-home node_exporter
+
+- name: "Download and install Node Exporter Libraries"
+  become: yes
+  shell: |
+    wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+    tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+    sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+    rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+    
+- name: "Copy Node Exporter Service file"
+  template:
+    src: "files/node-exporter.service"
+    dest: "/etc/systemd/system/node-exporter.service"
+
+- name: "Configure systemd"
+  become: yes
+  shell: |
+    sudo systemctl daemon-reload
+    sudo systemctl enable node-exporter
+    sudo systemctl start node-exporter
+    sudo systemctl status node-exporter
+  

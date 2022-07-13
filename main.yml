@@ -1,6 +1,6 @@
 ---
 # Exercise for setting up a web server in an EC
-- name: Exercise for setting up a web server in an EC 
+- name: Exercise for setting up a Node Exporter 
   # hosts: ubuntu
   # Use the public IP if the VM is already created
   hosts: all
@@ -9,4 +9,4 @@
   become_method: sudo
   become_user: root
   roles:
-   - setup
+   - node_exporter

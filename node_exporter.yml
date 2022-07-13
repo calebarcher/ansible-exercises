@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create Node Exporter EC2 Instance
+
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      SecurityGroupIds:
+        - sg-054c544b4064cb683
+      KeyName: udacity-ansible
+      ImageId: 'ami-08d4ac5b634553e16'
+      InstanceType: t2.micro
+      Tags:
+        - Key: Name
+          Value: node_exporter
+
