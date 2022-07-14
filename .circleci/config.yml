@@ -2,8 +2,6 @@ version: 2.1
 
 commands:
   destroy-environment:
-    docker:
-      - image: amazon/aws-cli
     steps:
       - run:
           name: Destroy Environment
@@ -12,10 +10,10 @@ commands:
              aws cloudformation delete-stack --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5}
   get-instance-dns:
     steps:
+      - run: echo '[all]' > ~/inventory.txt
       - run:
           name: Getting instance public IPV4 DNS
           command: |
-            echo '[all]' > ~/inventory.txt
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicDnsName' \
             --filters "Name=tag:Name,Values=node_exporter" \ 
@@ -150,9 +148,11 @@ workflows:
   my_workflow:
     jobs:
       - create-infrastructure
+      - create-inventory-file
       - configure-infrastructure:
           requires:
             - create-infrastructure
+            - create-inventory-file
       # - smoke-test
       # - create-and-deploy-frontend
       # - promote-to-production:
