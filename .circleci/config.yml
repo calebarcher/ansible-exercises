@@ -10,6 +10,7 @@ commands:
              aws cloudformation delete-stack --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5}
   get-instance-dns:
     steps:
+      - run: yum install -y tar gzip
       - run:
           name: Getting instance public IPV4 DNS
           command: |
