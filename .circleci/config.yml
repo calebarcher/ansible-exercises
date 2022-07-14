@@ -2,6 +2,8 @@ version: 2.1
 
 commands:
   destroy-environment:
+    docker:
+      - image: amazon/aws-cli
     steps:
       - run:
           name: Destroy Environment
@@ -40,6 +42,13 @@ jobs:
               --template-file node_exporter.yml \
               --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
+
+  create-inventory-file:
+    docker:
+      - image: amazon/cli
+    steps:
+      - checkout
+      - get-instance-dns
 
   configure-infrastructure:
     docker: 
