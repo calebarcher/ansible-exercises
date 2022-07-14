@@ -10,19 +10,18 @@ commands:
              aws cloudformation delete-stack --stack-name myNodeExporterStack-${CIRCLE_WORKFLOW_ID:0:5}
   get-instance-dns:
     steps:
-      - run: echo '[all]' > ~/inventory.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - inventory.txt
       - run:
           name: Getting instance public IPV4 DNS
           command: |
-            cat ~/inventory.txt
+            echo '[all]' > ~/inventory.txt
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicDnsName' \
             --filters "Name=tag:Name,Values=node_exporter" \
             --output text > file://~/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - inventory.txt
 
 
 orbs:
