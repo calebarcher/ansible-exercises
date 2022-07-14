@@ -43,7 +43,7 @@ jobs:
 
   create-inventory-file:
     docker:
-      - image: amazon/cli
+      - image: amazon/aws-cli
     steps:
       - checkout
       - get-instance-dns
@@ -148,7 +148,9 @@ workflows:
   my_workflow:
     jobs:
       - create-infrastructure
-      - create-inventory-file
+      - create-inventory-file:
+          requires:
+            - create-infrastructure
       - configure-infrastructure:
           requires:
             - create-infrastructure
