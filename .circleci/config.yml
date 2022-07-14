@@ -14,10 +14,10 @@ commands:
       - run:
           name: Getting instance public IPV4 DNS
           command: |
-            aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicDnsName' \
-            --filters 'Name=tag:Name,Values=node_exporter' \ 
-            --output text > file://~/inventory.txt
+            aws ec2 describe-instances \ 
+              --query 'Reservations[*].Instances[*].PublicDnsName' \ 
+              --filters "Name=tag:Name,Values=node_exporter" \ 
+              --output text >> file://~/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
