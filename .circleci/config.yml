@@ -17,7 +17,7 @@ commands:
             aws ec2 describe-instances \ 
               --query 'Reservations[*].Instances[*].PublicDnsName' \ 
               --filters "Name=tag:Name,Values=node_exporter" \ 
-              --output text >> file://~/inventory.txt
+              --output text > file://~/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
